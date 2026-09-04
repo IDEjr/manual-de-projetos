@@ -1,0 +1,355 @@
+/* ==========================================================================
+   Manual de Projetos — IDE 2026
+   Tema derivado do Manual de Identidade Visual (marketing/identidade_visual/MIV IDE.pdf):
+     cores  p.17  ·  tipografia principal p.22 (Bai Jamjuree)  ·  auxiliar p.23 (Open Sans)
+   ========================================================================== */
+
+:root{
+  /* sistema de cores da marca — MIV p.17 */
+  --roxo:#3F0F6B;
+  --violeta:#7726BD;
+  --azul:#0B68BE;
+  --verde:#3CAD14;
+
+  /* neutros com viés roxo, derivados da marca (não cinzas puros) */
+  --papel:#FBFAFD;
+  --superficie:#FFFFFF;
+  --tinta:#1E1626;
+  --tinta-2:#4A4155;
+  --apagado:#6E6579;
+  --regua:#E2DCEC;
+  --regua-forte:#C9BFDA;
+  --lilas:#F4F0FA;
+  --lilas-2:#EAE2F5;
+
+  --largura-indice:278px;
+  --medida:100%;      /* texto acompanha a caixa: mesma margem direita das tabelas */
+  --largura-texto:1240px;  /* caixa: tabelas e diagramas usam tudo */
+  --pad-lateral:clamp(1.5rem,3.5vw,3.5rem);
+  --recuo-dir:7.75rem;     /* metade do vão entre o índice e o início do texto */
+
+  --serif:"Bai Jamjuree","Trebuchet MS",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --texto:"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  margin:0;
+  padding-left:var(--largura-indice);   /* reserva a faixa do índice fixo */
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:var(--texto);
+  font-size:17px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+
+.skip{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--roxo); color:#fff; padding:.7em 1.2em; border-radius:0 0 6px 0;
+}
+.skip:focus{ left:0; }
+
+:focus-visible{ outline:2.5px solid var(--violeta); outline-offset:3px; border-radius:2px; }
+
+/* ---------- índice lateral (esquerda) ------------------------------------ */
+
+#indice{
+  position:fixed; inset:0 auto 0 0;
+  width:var(--largura-indice);
+  background:var(--superficie);
+  border-right:1px solid var(--regua);
+  padding:1.9rem 0 1rem;
+  display:flex; flex-direction:column;
+  z-index:10;
+}
+
+.marca{
+  display:block; padding:0 1.6rem 1.25rem; margin-bottom:.6rem;
+  border-bottom:1px solid var(--regua);
+  text-decoration:none; color:inherit;
+}
+.marca__logo{
+  display:block;
+  font-family:var(--serif); font-weight:500; font-size:1.45rem; letter-spacing:.12em;
+  color:var(--regua-forte); line-height:1;
+}
+.marca__logo b{ color:var(--roxo); font-weight:700; letter-spacing:.06em; }
+.marca__txt{
+  display:block; margin-top:.45rem;
+  font-family:var(--serif); font-size:.78rem; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--apagado);
+}
+
+#indice nav{ flex:1; overflow-y:auto; overscroll-behavior:contain; padding:0 .6rem 0 1.1rem; }
+#indice nav::-webkit-scrollbar{ width:9px; }
+#indice nav::-webkit-scrollbar-thumb{ background:var(--regua); border-radius:99px; }
+#indice nav::-webkit-scrollbar-thumb:hover{ background:var(--regua-forte); }
+
+#indice ul{ list-style:none; margin:0; padding:0; }
+#indice > nav > ul{ padding-bottom:1.5rem; }
+#indice li{ margin:0; }
+
+#indice a{
+  display:block; padding:.34em .6em .34em .7em;
+  border-left:2.5px solid transparent; border-radius:0 4px 4px 0;
+  color:var(--tinta-2); text-decoration:none;
+  font-size:.845rem; line-height:1.4;
+}
+#indice a:hover{ background:var(--lilas); color:var(--roxo); }
+#indice a.atual{
+  background:var(--lilas-2); border-left-color:var(--roxo);
+  color:var(--roxo); font-weight:600;
+}
+
+/* nível 1 — capítulos */
+#indice > nav > ul > li > a{
+  font-family:var(--serif); font-weight:600; font-size:.9rem;
+  color:var(--roxo); margin-top:.85rem;
+}
+/* nível 2 */
+#indice ul ul a{ padding-left:1.5rem; }
+/* nível 3 */
+#indice ul ul ul a{ padding-left:2.4rem; font-size:.8rem; color:var(--apagado); }
+
+.indice__pe{
+  margin:0; padding:.9rem 1.6rem 0;
+  border-top:1px solid var(--regua);
+  font-size:.7rem; line-height:1.5; color:var(--apagado);
+}
+
+/* ---------- coluna de leitura -------------------------------------------- */
+
+#conteudo{
+  max-width:var(--largura-texto);
+  margin:0 auto;
+  padding:4.5rem calc(var(--pad-lateral) + var(--recuo-dir)) 8rem var(--pad-lateral);
+}
+
+/* Texto corrido fica na medida de leitura; tabelas, diagramas e código
+   ocupam a largura toda da caixa. */
+#conteudo table,
+#conteudo pre,
+#conteudo img,
+#conteudo figure{ max-width:100%; }
+
+/* O Pandoc envolve cada diagrama Mermaid num <p>, que herdaria a medida de
+   leitura e espremeria a imagem. Estes parágrafos são figuras, não texto. */
+#conteudo p:has(> img){ max-width:100%; overflow-x:auto; }
+/* Um diagrama mais largo que a coluna ROLA, em vez de encolher até o texto
+   sumir — mesma regra que já vale para as tabelas. */
+#conteudo p > img{ margin-inline:0; max-width:none; }
+
+/* capa */
+.capa{ margin-bottom:4.5rem; padding-bottom:2.5rem; border-bottom:3px solid var(--roxo); }
+.capa__marca{
+  margin:0 0 1.4rem;
+  font-family:var(--serif); font-size:2.6rem; font-weight:500; letter-spacing:.14em;
+  color:var(--regua-forte); line-height:1;
+}
+.capa__marca b{ color:var(--roxo); font-weight:700; letter-spacing:.05em; }
+.capa__titulo{
+  margin:0; border:0; padding:0;
+  font-family:var(--serif); font-size:clamp(2.2rem,5.5vw,3.1rem); font-weight:700;
+  line-height:1.12; letter-spacing:-.015em; color:var(--roxo); text-wrap:balance;
+}
+.capa__titulo::before{ content:none; }
+.capa__sub{
+  margin:1rem 0 0; max-width:46ch;
+  font-size:1.08rem; line-height:1.55; color:var(--tinta-2);
+}
+.capa__nota{
+  margin:1.8rem 0 0;
+  font-family:var(--serif); font-size:.75rem; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--apagado);
+}
+
+/* títulos */
+h1,h2,h3,h4,h5,h6{
+  font-family:var(--serif); font-weight:600;
+  line-height:1.22; letter-spacing:-.01em; text-wrap:balance;
+  color:var(--roxo); scroll-margin-top:2rem;
+}
+h1{
+  margin:5rem 0 1.8rem; padding-bottom:.5rem;
+  font-size:2.05rem; font-weight:700;
+  border-bottom:2px solid var(--roxo);
+}
+h2{ margin:3.4rem 0 1.1rem; font-size:1.5rem; }
+h3{ margin:2.6rem 0 .8rem; font-size:1.17rem; color:var(--tinta); }
+h4{ margin:2rem 0 .6rem; font-size:1rem; color:var(--tinta-2); }
+h5,h6{
+  margin:1.6rem 0 .5rem; font-size:.8rem; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--apagado);
+}
+h1:first-of-type{ margin-top:0; }
+
+/* colchetes da marca no número do capítulo */
+main > h1{ position:relative; }
+
+/* texto corrente */
+p,ul,ol,dl{ margin:0 0 1.15em; max-width:var(--medida); }
+
+/* Justificado, alinhando as duas margens. hyphens:auto evita os "rios" de
+   espaço que a justificação cria em palavras longas do português. */
+#conteudo p,
+#conteudo li,
+#conteudo blockquote,
+#conteudo dd{
+  text-align:justify;
+  hyphens:auto;
+  -webkit-hyphens:auto;
+  text-wrap:pretty;
+}
+/* nada disso vale para o que não é texto corrido */
+#conteudo p:has(> img),
+#conteudo th, #conteudo td,
+#conteudo pre, #conteudo code,
+#conteudo h1, #conteudo h2, #conteudo h3, #conteudo h4, #conteudo h5, #conteudo h6{
+  text-align:left; hyphens:manual;
+}
+li{ margin:.3em 0; }
+li > ul, li > ol{ margin:.35em 0 .55em; }
+ul{ padding-left:1.35em; } ol{ padding-left:1.5em; }
+ul li::marker{ color:var(--violeta); }
+ol li::marker{ color:var(--violeta); font-weight:600; }
+strong{ font-weight:700; color:var(--tinta); }
+em{ color:var(--tinta-2); }
+hr{ border:0; border-top:1px solid var(--regua); margin:3rem 0; max-width:var(--medida); }
+
+a{ color:var(--azul); text-decoration:underline; text-underline-offset:2px;
+   text-decoration-thickness:1px; text-decoration-color:var(--regua-forte); }
+a:hover{ color:var(--violeta); text-decoration-color:currentColor; }
+
+/* código */
+code{
+  font-family:var(--mono); font-size:.855em;
+  background:var(--lilas); color:var(--roxo);
+  padding:.14em .38em; border-radius:4px;
+  border:1px solid var(--lilas-2);
+  overflow-wrap:break-word;
+}
+pre{
+  margin:0 0 1.4em; padding:1.05rem 1.25rem;
+  background:var(--superficie); border:1px solid var(--regua);
+  border-left:3px solid var(--regua-forte); border-radius:6px;
+  overflow-x:auto; line-height:1.6; font-size:.85rem;
+}
+pre code{
+  background:none; border:0; padding:0; color:var(--tinta); font-size:1em;
+  white-space:pre;
+}
+
+/* callouts (blockquote) */
+blockquote{
+  margin:0 0 1.5em; padding:1.05rem 1.3rem;
+  max-width:var(--medida);
+  background:var(--lilas);
+  border-left:4px solid var(--roxo);
+  border-radius:0 6px 6px 0;
+  color:var(--tinta-2);
+}
+blockquote > :last-child{ margin-bottom:0; }
+blockquote strong{ color:var(--roxo); }
+blockquote code{ background:var(--superficie); }
+
+/* tabelas */
+table{
+  display:block; width:max-content; max-width:100%;
+  overflow-x:auto; border-collapse:collapse;
+  margin:0 0 1.7em; font-size:.9rem; line-height:1.55;
+  border:1px solid var(--regua); border-radius:6px;
+}
+col{ width:auto !important; }
+caption{
+  caption-side:top; text-align:left; padding:0 0 .55em;
+  font-family:var(--serif); font-size:.82rem; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--apagado);
+}
+th,td{ padding:.62em .95em; text-align:left; vertical-align:top;
+       border-bottom:1px solid var(--regua); }
+thead th{
+  background:var(--roxo); color:#fff; font-family:var(--serif); font-weight:600;
+  font-size:.86rem; letter-spacing:.01em; border-bottom:0;
+  position:sticky; top:0;
+}
+tbody tr:nth-child(even){ background:var(--lilas); }
+tbody tr:last-child td{ border-bottom:0; }
+td code, th code{ font-size:.88em; }
+
+/* bloco recolhível — o "botão" que abre um exemplo longo */
+details{
+  margin:1.8em 0;
+  border:1px solid var(--regua);
+  border-left:4px solid var(--roxo);
+  border-radius:0 6px 6px 0;
+  background:var(--superficie);
+  overflow:hidden;
+}
+details > summary{
+  cursor:pointer; list-style:none;
+  padding:.9rem 1.2rem;
+  background:var(--lilas);
+  font-family:var(--serif); font-weight:600; font-size:.95rem;
+  color:var(--roxo);
+  display:flex; align-items:center; gap:.6rem;
+  transition:background .15s;
+}
+details > summary::-webkit-details-marker{ display:none; }
+details > summary::before{
+  content:"\25B8"; display:inline-block;
+  transition:transform .15s; color:var(--violeta); font-size:1.1em;
+}
+details[open] > summary::before{ transform:rotate(90deg); }
+details > summary:hover{ background:var(--lilas-2); }
+details[open] > summary{ border-bottom:1px solid var(--regua); }
+details > *:not(summary){ margin-left:1.2rem; margin-right:1.2rem; }
+details > :nth-child(2){ margin-top:1.3rem; }
+details > :last-child{ margin-bottom:1.3rem; }
+
+/* figuras e diagramas */
+img{ display:block; max-width:100%; height:auto; margin:1.6em 0; border-radius:6px; }
+figure{ margin:1.8em 0; }
+figcaption{ font-size:.84rem; color:var(--apagado); margin-top:.6em; }
+/* legendas em itálico logo após um diagrama */
+p > em:only-child{ display:inline-block; font-size:.87rem; color:var(--apagado); }
+
+/* ---------- responsivo --------------------------------------------------- */
+
+@media (max-width:1100px){
+  #indice{
+    position:static; width:auto; inset:auto;
+    border-right:0; border-bottom:1px solid var(--regua);
+    padding:1.4rem 0 .5rem;
+  }
+  #indice nav{ max-height:17rem; padding:0 1.4rem; }
+  .marca{ padding:0 1.4rem 1rem; }
+  .indice__pe{ padding:.8rem 1.4rem 0; }
+  body{ padding-left:0; }
+  #conteudo{ margin:0; padding:2.75rem 1.4rem 5rem; max-width:none; --recuo-dir:0rem; }
+  .capa{ margin-bottom:3rem; }
+}
+
+/* ---------- impressão ---------------------------------------------------- */
+
+@media print{
+  #indice,.skip{ display:none !important; }
+  /* no papel nao ha botao: todo bloco recolhivel imprime expandido */
+  details > *{ display:block !important; }
+  details{ break-inside:auto; }
+  details > summary{ background:none; padding-left:0; }
+  body{ background:#fff; font-size:10.5pt; padding-left:0; }
+  #conteudo{ margin:0; padding:0; max-width:none; --recuo-dir:0rem; }
+  table,pre,blockquote,img,figure{ break-inside:avoid; }
+  tr,li{ break-inside:avoid; }
+  h1,h2,h3,h4{ break-after:avoid; }
+  h1{ break-before:page; }
+  .capa{ break-after:page; }
+  a{ color:var(--tinta); text-decoration:none; }
+  thead th{ position:static; }
+}

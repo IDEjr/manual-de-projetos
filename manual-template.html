@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html$if(lang)$ lang="$lang$"$endif$>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content="pandoc" />
+  <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
+  <!-- Bai Jamjuree (títulos) e Open Sans (corpo) — MIV IDE, p.22 e p.23.
+       Com --embed-resources o Pandoc baixa e embute as fontes em base64;
+       sem ele, este link continua funcionando com internet. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+$for(css)$
+  <link rel="stylesheet" href="$css$" />
+$endfor$
+$if(highlighting-css)$
+  <style>
+$highlighting-css$
+  </style>
+$endif$
+</head>
+<body>
+
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<aside id="indice" aria-label="Índice">
+  <a class="marca" href="#top">
+    <span class="marca__logo" aria-hidden="true">[<b>IDE</b>]</span>
+    <span class="marca__txt">Manual de Projetos</span>
+  </a>
+  <nav>
+$table-of-contents$
+  </nav>
+  <p class="indice__pe">IDE&nbsp;2026 · Empresa Júnior de Programação da UFRGS</p>
+</aside>
+
+<main id="conteudo">
+  <header id="top" class="capa">
+    <p class="capa__marca" aria-hidden="true">[<b>IDE</b>]</p>
+    <h1 class="capa__titulo">$if(title)$$title$$else$$pagetitle$$endif$</h1>
+$if(subtitle)$
+    <p class="capa__sub">$subtitle$</p>
+$endif$
+    <p class="capa__nota">Soluções em programação · UFRGS</p>
+  </header>
+
+$body$
+</main>
+
+<script>
+// Realce da seção atual no índice. Único script do documento.
+(function () {
+  var links = {}, alvos = [];
+  document.querySelectorAll('#indice nav a[href^="#"]').forEach(function (a) {
+    var el = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+    if (el) { links[el.id] = a; alvos.push(el); }
+  });
+  if (!alvos.length || !('IntersectionObserver' in window)) return;
+  var visiveis = new Set(), atual = null;
+  function pintar() {
+    var id = null;
+    for (var i = 0; i < alvos.length; i++) { if (visiveis.has(alvos[i].id)) { id = alvos[i].id; break; } }
+    if (!id || id === atual) return;
+    if (atual && links[atual]) links[atual].classList.remove('atual');
+    atual = id;
+    links[id].classList.add('atual');
+    var nav = document.getElementById('indice');
+    var r = links[id].getBoundingClientRect(), n = nav.getBoundingClientRect();
+    if (r.top < n.top + 40 || r.bottom > n.bottom - 40) links[id].scrollIntoView({ block: 'center' });
+  }
+  var obs = new IntersectionObserver(function (entradas) {
+    entradas.forEach(function (e) {
+      if (e.isIntersecting) visiveis.add(e.target.id); else visiveis.delete(e.target.id);
+    });
+    pintar();
+  }, { rootMargin: '0px 0px -70% 0px' });
+  alvos.forEach(function (el) { obs.observe(el); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Saídas geradas. O manual.html é versionado de propósito (é o produto de
+# leitura, e quem só quer ler não deve precisar instalar o pandoc).
+manual.docx
+manual.pdf
+
+# Ruído do mermaid-filter
+mermaid-filter.err
+
+# Sistema operacional / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
